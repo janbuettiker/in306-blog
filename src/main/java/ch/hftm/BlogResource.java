@@ -2,15 +2,17 @@ package ch.hftm;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 
-@Path("/blog")
+import java.util.List;
+
+import ch.hftm.Model.Entry;
+
+@Path("/entries")
 public class BlogResource {
 
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public String hello() {
-        return "Willkommen auf meinem Blog!";
+    public List<Entry> getEntries() {
+        return List.of(new Entry("Mein erster Blog Post", "Das ist mein Spannender Inhalt"),
+                new Entry("Why Quarkus", "Because it is the best!"));
     }
 }
