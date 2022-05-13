@@ -2,13 +2,18 @@ package ch.hftm.blog.models;
 
 import java.util.Date;
 
-public class Entry {
+import javax.persistence.Entity;
 
-    private String title;
-    private String description;
-    private String content;
-    private Date creationDate;
-    private Date lastEditDate;
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+
+@Entity
+public class Entry extends PanacheEntity {
+
+    public String title;
+    public String description;
+    public String content;
+    public Date creationDate;
+    public Date lastEditDate;
 
     public Entry() {
         this.creationDate = new Date();
@@ -19,46 +24,6 @@ public class Entry {
         this.title = title;
         this.content = content;
 
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public Date getLastEditDate() {
-        return lastEditDate;
-    }
-
-    public void setLastEditDate(Date lastEditDate) {
-        this.lastEditDate = lastEditDate;
     }
 
 }

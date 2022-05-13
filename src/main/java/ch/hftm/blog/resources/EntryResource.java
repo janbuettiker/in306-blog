@@ -1,6 +1,7 @@
 package ch.hftm.blog.resources;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
@@ -17,7 +18,13 @@ public class EntryResource {
 
     @GET
     public List<Entry> getEntries() {
-        this.entryService.addDummyEntry();
         return this.entryService.getEntries();
+    }
+
+    @GET
+    @Path("/add")
+    @Transactional
+    public void addEntry() {
+        this.entryService.addDummyEntry();
     }
 }
