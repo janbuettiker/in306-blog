@@ -14,9 +14,19 @@ public class EntryService {
         return Entry.listAll();
     }
 
+    public Entry findByTitle(String title) {
+        return Entry.findByTitle(title);
+    }
+
     @Transactional
     public void addDummyEntry() {
         var entry = new Entry("Dummy", "Entry");
         entry.persist();
+    }
+
+    @Transactional
+    public void removeEntryByTitle(String title) {
+        var entry = this.findByTitle(title);
+        entry.delete();
     }
 }

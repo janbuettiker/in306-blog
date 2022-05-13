@@ -26,4 +26,8 @@ public class Entry extends PanacheEntity {
 
     }
 
+    public static Entry findByTitle(String title) {
+        return find("title", title).firstResult();
+    }
+
 }

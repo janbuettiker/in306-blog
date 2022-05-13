@@ -1,9 +1,9 @@
 package ch.hftm.blog.resources;
 
 import javax.inject.Inject;
-import javax.transaction.Transactional;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 
 import ch.hftm.blog.models.Entry;
 import ch.hftm.blog.services.EntryService;
@@ -23,8 +23,19 @@ public class EntryResource {
 
     @GET
     @Path("/add")
-    @Transactional
     public void addEntry() {
         this.entryService.addDummyEntry();
+    }
+
+    @GET
+    @Path("/find/{title}")
+    public Entry findByTitle(@PathParam("title") String title) {
+        return this.entryService.findByTitle(title);
+    }
+
+    @GET
+    @Path("/remove/{title}")
+    public void removeEntryByTitle(@PathParam("title") String title) {
+        this.entryService.removeEntryByTitle(title);
     }
 }
