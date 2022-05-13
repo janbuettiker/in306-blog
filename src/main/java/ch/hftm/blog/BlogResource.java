@@ -1,11 +1,11 @@
-package ch.hftm;
+package ch.hftm.blog;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
-import java.util.List;
+import ch.hftm.blog.model.Entry;
 
-import ch.hftm.Model.Entry;
+import java.util.List;
 
 @Path("/entries")
 public class BlogResource {

@@ -1,4 +1,4 @@
-package ch.hftm.Model;
+package ch.hftm.blog.model;
 
 import java.util.Date;
 
