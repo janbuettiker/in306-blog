@@ -17,7 +17,7 @@ public class EntryResource {
 
     @GET
     public List<Entry> getEntries() {
-        return List.of(new Entry("Mein erster Blog Post", "Das ist mein Spannender Inhalt"),
-                new Entry("Why Quarkus", "Because it is the best!"));
+        this.entryService.addDummyEntry();
+        return this.entryService.getEntries();
     }
 }
