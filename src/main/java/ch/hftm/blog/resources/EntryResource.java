@@ -26,8 +26,8 @@ public class EntryResource {
         return this.entryService.getEntries();
     }
 
-    @GET
-    @Path("/add")
+    @POST
+    @Path("/add-dummy-data")
     public void addDummyEntry() {
         this.entryService.addDummyEntry();
     }
