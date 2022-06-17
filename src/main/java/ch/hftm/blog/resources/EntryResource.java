@@ -18,6 +18,8 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
+import org.eclipse.microprofile.openapi.annotations.Operation;
+
 import ch.hftm.blog.models.Entry;
 import ch.hftm.blog.services.EntryService;
 
@@ -56,6 +58,7 @@ public class EntryResource {
     }
 
     @POST
+    @Operation(summary = "POST a new Entry", description = "This will create a new entry on the service.")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addEntry(Entry entry, @Context UriInfo uriInfo) {
         this.entryService.addEntry(entry);
