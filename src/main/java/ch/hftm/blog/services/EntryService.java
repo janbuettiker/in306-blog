@@ -12,11 +12,15 @@ import ch.hftm.blog.models.Entry;
 public class EntryService {
 
     public List<Entry> getEntries() {
-        return Entry.listAll();
+        return Entry.findAll().list();
     }
 
-    public Entry findByTitle(String title) {
-        return Entry.findByTitle(title);
+    public List<Entry> searchEntries(String searchString) {
+        return Entry.list("title LIKE ?1 or content LIKE ?1", "%" + searchString + "%");
+    }
+
+    public Entry findById(Long id) {
+        return Entry.findById(id);
     }
 
     @Transactional
@@ -43,8 +47,7 @@ public class EntryService {
     }
 
     @Transactional
-    public void removeEntryByTitle(String title) {
-        var entry = this.findByTitle(title);
-        entry.delete();
+    public void removeEntryById(Long id) {
+        Entry.deleteById(id);
     }
 }
