@@ -6,6 +6,49 @@ This project will help us get an overview of the Quarkus Java Framework to
 easily create backend services.
 The topics that we learn during guided lessons will be implemented in the dev branch of this project.
 
+## API Design
+
+### Entries
+
+Entries are in its basic form just some blog posts.
+These posts contain a title, description as well as the actual content.
+Entries should be able to be created, edited and removed through the backend API.
+
+#### GET
+
+- Simple GET to the "entries" endpoint will list all entries.
+- Using the Query Param "?search=searchtext", we can filter the returned entries.
+- GET on "entries/{id}" will list the specific entry
+- If entry does not exist, an error message will be returned to the API user.
+
+#### POST
+
+- Create a new entry by submitting a valid JSON object to the api
+- Check the Entry JSON object reference :)
+
+#### PATCH
+
+- By sending a valid JSON object to the endpoint with the reference of the to-be-updated entry with "entries/{id}", the object will be updated with the newly submitted information
+
+#### DELETE
+
+- Calling the "entries/{id}" endpoint, the specified entry can be deleted
+- Delete only works, if the correct authKey has been submitted through the request header.
+- Header value for authorization == "auth"
+- In our super-secure demo case, that would be any string starting with "elevated"
+
+#### Entry JSON
+
+JSON reference object for creating your entries through the API
+
+```json
+{
+  "title": "My First Blog",
+  "description": "This is a super insightful description",
+  "content": "Blogging is super cool, but not for me.. But here we are anyways, my disappointment is immeasurable and my day is ruined."
+}
+```
+
 ## Running the application in dev mode
 
 We can run this application in dev mode using:
