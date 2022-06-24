@@ -24,12 +24,6 @@ public class EntryService {
     }
 
     @Transactional
-    public void addDummyEntry() {
-        var entry = new Entry("Dummy", "Entry");
-        entry.persist();
-    }
-
-    @Transactional
     public void addEntry(Entry entry) {
         entry.persist();
     }

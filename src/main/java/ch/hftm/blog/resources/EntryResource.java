@@ -1,6 +1,7 @@
 package ch.hftm.blog.resources;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -9,6 +10,7 @@ import javax.ws.rs.PATCH;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
@@ -20,6 +22,7 @@ import javax.ws.rs.core.Response.Status;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
 
+import ch.hftm.blog.dtos.EntryDto;
 import ch.hftm.blog.models.Entry;
 import ch.hftm.blog.services.EntryService;
 
@@ -42,28 +45,28 @@ public class EntryResource {
 
     @GET
     @Path("{id}")
-    public Entry findById(@PathParam("id") Long id) {
+    public Response findById(@PathParam("id") Long id) {
         var entry = this.entryService.findById(id);
         if (entry == null) {
             throw new WebApplicationException("Entry with id of " + id + " does not exist.", 404);
         }
 
-        return entry;
-    }
+        EntryDto entryDto = new EntryDto(entry.title, entry.content, entry.description);
 
-    @POST
-    @Path("/add-dummy-data")
-    public void addDummyEntry() {
-        this.entryService.addDummyEntry();
+        return Response.ok(entryDto).build();
     }
 
     @POST
     @Operation(summary = "POST a new Entry", description = "This will create a new entry on the service.")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addEntry(Entry entry, @Context UriInfo uriInfo) {
+    @Produces(MediaType.APPLICATION_JSON)
+    // Make sure that the Entry is valdi with javax.validation.Valid
+    public Response addEntry(@Valid EntryDto userEntryDto, @Context UriInfo uriInfo) {
+        var entry = new Entry(userEntryDto);
+
         this.entryService.addEntry(entry);
         UriBuilder builder = uriInfo.getAbsolutePathBuilder().path(Long.toString(entry.id));
-        return Response.created(builder.build()).build();
+        return Response.created(builder.build()).entity(userEntryDto).build();
     }
 
     @PATCH
