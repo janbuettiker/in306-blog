@@ -1,11 +1,13 @@
 package ch.hftm.blog.models;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 
 import org.hibernate.validator.constraints.Length;
@@ -31,6 +33,9 @@ public class Entry extends PanacheEntityBase {
     public Date lastEditDate;
 
     public int likes;
+
+    @OneToMany(mappedBy = "entry")
+    public List<Comment> commentList;
 
     public Entry(EntryDto entryDto) {
         this(entryDto.title(), entryDto.content(), entryDto.description());
