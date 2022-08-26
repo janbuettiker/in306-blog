@@ -29,4 +29,7 @@ public class Comment extends PanacheEntityBase {
         // Empty Panache Constructor
     }
 
+    public record CommentDTO(String content) {
+    }
+
 }
