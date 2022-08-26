@@ -1,5 +1,6 @@
 package ch.hftm.blog.models;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -43,6 +44,7 @@ public class Entry extends PanacheEntityBase {
 
     public Entry() {
         this.creationDate = new Date();
+        commentList = new ArrayList<>();
     }
 
     public Entry(String title, String content, String description) {
