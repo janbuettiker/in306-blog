@@ -1,5 +1,7 @@
 package ch.hftm.blog.resources;
 
+import javax.annotation.security.DenyAll;
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -25,6 +27,7 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 import ch.hftm.blog.dtos.EntryDto;
 import ch.hftm.blog.models.Entry;
 import ch.hftm.blog.services.EntryService;
+import io.quarkus.security.Authenticated;
 
 import java.util.List;
 
@@ -35,6 +38,7 @@ public class EntryResource {
     EntryService entryService;
 
     @GET
+    @Authenticated
     public List<Entry> getEntries(@QueryParam("search") String searchString) {
         if (searchString == null || searchString.isEmpty()) {
             return this.entryService.getEntries();
@@ -44,6 +48,7 @@ public class EntryResource {
     }
 
     @GET
+    @Authenticated
     @Path("{id}")
     public Response findById(@PathParam("id") Long id) {
         var entry = this.entryService.findById(id);
@@ -57,6 +62,7 @@ public class EntryResource {
     }
 
     @POST
+    @RolesAllowed("author")
     @Operation(summary = "POST a new Entry", description = "This will create a new entry on the service.")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -71,6 +77,7 @@ public class EntryResource {
 
     @PATCH
     @Path("{id}")
+    @Authenticated
     @Consumes(MediaType.APPLICATION_JSON)
     public Entry putEntry(@PathParam("id") Long id, Entry entry) {
         return this.entryService.patchEntry(id, entry);
@@ -78,6 +85,7 @@ public class EntryResource {
 
     @DELETE
     @Path("{id}")
+    @Authenticated
     public Response removeEntryById(@PathParam("id") Long id, @HeaderParam("auth") String authKeyString) {
         if (authKeyString == null || authKeyString.isEmpty() || !authKeyString.startsWith("elevated")) {
             return Response.status(Status.FORBIDDEN).build();

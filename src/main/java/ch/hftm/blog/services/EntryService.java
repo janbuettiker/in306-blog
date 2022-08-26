@@ -2,11 +2,13 @@ package ch.hftm.blog.services;
 
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.ApplicationScoped;
 import javax.transaction.Transactional;
 import javax.ws.rs.WebApplicationException;
 
 import ch.hftm.blog.models.Entry;
+import io.quarkus.security.Authenticated;
 
 @ApplicationScoped
 public class EntryService {
@@ -23,6 +25,7 @@ public class EntryService {
         return Entry.findById(id);
     }
 
+    @RolesAllowed("author")
     @Transactional
     public void addEntry(Entry entry) {
         entry.persist();

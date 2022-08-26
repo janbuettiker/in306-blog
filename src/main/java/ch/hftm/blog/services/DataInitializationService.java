@@ -24,7 +24,7 @@ public class DataInitializationService {
 
             Entry e = new Entry("Mein erster Blogbeitrag", "Hier ist wertvoller Inhalt vorhanden", "Ein Blog Beitrag");
 
-            entryService.addEntry(e);
+            e.persist();
 
             Comment c1 = new Comment();
             c1.content = "Wow das ist ein wertvoller Blogpost";
