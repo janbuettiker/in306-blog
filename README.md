@@ -102,3 +102,30 @@ Or, if you don't have GraalVM installed, you can run the native executable build
 You can then execute your native executable with: `./target/in306-blog-0.1-runner`
 
 If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.
+
+# Reactive Quarkus
+
+## Introduction
+
+For example user events are a traditional use case for reactive programming.
+eg. - When a user clicks a button it should execute a specific function.
+So reactive means, we are reacting on actions, here a user clicking a button.
+
+This paradigm is especially useful and helps with following characteristics:
+
+- High data scale
+- High usage scale
+- Cloud based costs
+
+## How to scale up
+
+- Vertical Scaling
+- Add more power to your server
+- Horizontal Scaling
+- Adding more servers
+
+To be able to scale horizontally, well written code needs to be produced or legacy code needs to be optimized.
+
+For example, a function that receives a user and its preferences over two different services.
+Code that is unecessarily sequential would cause the code to wait for the first service to finish.
+This is blocking code further raising cost in performance and needed compute costs.
