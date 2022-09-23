@@ -28,14 +28,19 @@ import ch.hftm.blog.dtos.EntryDto;
 import ch.hftm.blog.models.Entry;
 import ch.hftm.blog.services.EntryService;
 import io.quarkus.security.Authenticated;
+import io.quarkus.security.identity.SecurityIdentity;
 
 import java.util.List;
 
 @Path("/entries")
+@Authenticated
 public class EntryResource {
 
     @Inject
     EntryService entryService;
+
+    @Inject
+    SecurityIdentity identity;
 
     @GET
     @Authenticated

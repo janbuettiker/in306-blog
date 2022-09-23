@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response;
 
 import ch.hftm.blog.models.Comment;
 import ch.hftm.blog.services.EntryService;
+import io.quarkus.logging.Log;
 
 @Path("/entries/{id}/comment")
 public class CommentResource {
@@ -26,6 +27,7 @@ public class CommentResource {
 
     @GET
     public List<Comment> getComments() {
+        Log.info("GET all comments of blog entry");
         return Comment.findAll().list();
 
     }
@@ -33,6 +35,7 @@ public class CommentResource {
     @GET
     @Path("{id}")
     public Comment findById(@PathParam("id") Long id) {
+        Log.infof("GET comment with id %s", id);
         return Comment.findById(id);
     }
 
@@ -43,6 +46,7 @@ public class CommentResource {
         comment.entry = entryService.findById(id);
         System.out.println(comment.entry);
         comment.persist();
+        Log.info("Successfully added a comment");
         return Response.ok(comment).build();
     }
 
@@ -53,9 +57,9 @@ public class CommentResource {
     public Comment patchComment(@PathParam("id") Long id, Comment comment) {
         Comment c = Comment.findById(id);
         if (c == null) {
+            Log.error("Entry does not exist");
             throw new WebApplicationException("Entry with id of " + id + " does not exist.", 404);
         }
-
         c.content = comment.content;
         return c;
     }
