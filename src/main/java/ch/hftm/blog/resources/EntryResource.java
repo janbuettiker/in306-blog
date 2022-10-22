@@ -26,24 +26,29 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 
 import ch.hftm.blog.dtos.EntryDto;
 import ch.hftm.blog.models.Entry;
+import ch.hftm.blog.models.Message;
 import ch.hftm.blog.services.EntryService;
+import ch.hftm.blog.services.ValidatorService;
 import io.quarkus.security.Authenticated;
 import io.quarkus.security.identity.SecurityIdentity;
 
 import java.util.List;
 
 @Path("/entries")
-@Authenticated
+// @Authenticated
 public class EntryResource {
 
     @Inject
     EntryService entryService;
 
     @Inject
+    ValidatorService validatorService;
+
+    @Inject
     SecurityIdentity identity;
 
     @GET
-    @Authenticated
+    // @Authenticated
     public List<Entry> getEntries(@QueryParam("search") String searchString) {
         if (searchString == null || searchString.isEmpty()) {
             return this.entryService.getEntries();
@@ -53,7 +58,7 @@ public class EntryResource {
     }
 
     @GET
-    @Authenticated
+    // @Authenticated
     @Path("{id}")
     public Response findById(@PathParam("id") Long id) {
         var entry = this.entryService.findById(id);
@@ -63,11 +68,12 @@ public class EntryResource {
 
         EntryDto entryDto = new EntryDto(entry.title, entry.content, entry.description);
 
+        this.validatorService.validateMessage(entry.title);
+
         return Response.ok(entryDto).build();
     }
 
     @POST
-    @RolesAllowed("author")
     @Operation(summary = "POST a new Entry", description = "This will create a new entry on the service.")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -76,13 +82,14 @@ public class EntryResource {
         var entry = new Entry(userEntryDto);
 
         this.entryService.addEntry(entry);
+
         UriBuilder builder = uriInfo.getAbsolutePathBuilder().path(Long.toString(entry.id));
         return Response.created(builder.build()).entity(userEntryDto).build();
     }
 
     @PATCH
     @Path("{id}")
-    @Authenticated
+    // @Authenticated
     @Consumes(MediaType.APPLICATION_JSON)
     public Entry putEntry(@PathParam("id") Long id, Entry entry) {
         return this.entryService.patchEntry(id, entry);
@@ -90,7 +97,7 @@ public class EntryResource {
 
     @DELETE
     @Path("{id}")
-    @Authenticated
+    // @Authenticated
     public Response removeEntryById(@PathParam("id") Long id, @HeaderParam("auth") String authKeyString) {
         if (authKeyString == null || authKeyString.isEmpty() || !authKeyString.startsWith("elevated")) {
             return Response.status(Status.FORBIDDEN).build();

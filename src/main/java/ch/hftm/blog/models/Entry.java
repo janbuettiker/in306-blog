@@ -35,6 +35,8 @@ public class Entry extends PanacheEntityBase {
 
     public int likes;
 
+    public boolean isValidated;
+
     @OneToMany(mappedBy = "entry")
     public List<Comment> commentList;
 
@@ -44,6 +46,7 @@ public class Entry extends PanacheEntityBase {
 
     public Entry() {
         this.creationDate = new Date();
+        this.isValidated = false;
         commentList = new ArrayList<>();
     }
 
