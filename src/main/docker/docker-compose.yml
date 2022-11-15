@@ -1,0 +1,26 @@
+services:
+  blog:
+    image: ghcr.io/janbuettiker/in306-blog:latest
+    container_name: in306-blog
+    restart: always
+    ports:
+      - 8080:8080
+  text-validator:
+    image: ghcr.io/janbuettiker/in306-text-validator:latest
+    container_name: in306-text-validator
+    restart: always
+    ports:
+      - 8081:8081
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: dbuser
+      MYSQL_DATABASE: blogdb
+      MYSQL_USER: dbuser
+      MYSQL_PASSWORD: dbuser
+    container_name: in306-blog-mysql
+    ports:
+      - 3306:3306
+

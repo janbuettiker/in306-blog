@@ -2,9 +2,24 @@
 
 ## Blog Project
 
-This project will help us get an overview of the Quarkus Java Framework to
-easily create backend services.
+This project will help us get an overview of the Quarkus Java Framework toeasily create backend services.
 The topics that we learn during guided lessons will be implemented in the dev branch of this project.
+
+## Disclaimer
+
+My blog only runs in Quarkus Dev services (at least with a decupled database) and there are several other features
+that would be required, but I left out as I had no time to fix it. I would probably need to rewrite the whole project
+from scratch and I definitely can't be bothered to do that for the time being..
+
+Following features do not work
+
+- Auth Token, authentication did work but only through httpie, the JWT token was not accepted in DEV mode.
+- Also an external instance of Keycloak could have been used, but also did not get it to work.
+- There are some remains where I tried to do with Azure AD but I was too stupid to get it to work.
+- You will find a docker compose file, but that does not work as well, but at least I tried
+- Kafka messaging works, but you cannot see the queue in dev mode for whatever reason. (Also, the dev containers need to be started in a specific order to work)
+
+Under the section "Running the application" I have documented the necessary steps to at least get dev mode to run..
 
 ## API Design
 
@@ -49,83 +64,43 @@ JSON reference object for creating your entries through the API
 }
 ```
 
-## Running the application in dev mode
+## Running the application
 
-We can run this application in dev mode using:
+As this abomination of an application does not work in prod (which is the default for Java code I've heard. Either its used in school or never in actual production), I will just describe, how to start up the app in dev mode.
 
-```shell script
-./mvnw compile quarkus:dev
-```
+### Download the repositories
 
-This will enable live coding and makes our api available under
-http://localhost:8080
+1. First download the blog and navigate to the reactive branch
 
-We can also check out the openapi documentation to interact with our api
-http://localhost:8080/q/swagger-ui/
-or GET http://localhost:8080/q/openapi/
+- ```bash
+  git clone git@github.com:janbuettiker/in306-blog.git
+  git checkout reactive
+  ```
 
-## Packaging and running the application
+2. Then, download the messaging micro service
 
-The application can be packaged using:
+- ```bash
+  git clone git@github.com:janbuettiker/in306-text-validator.git
+  ```
 
-```shell script
-./mvnw package
-```
+### Start up dev mode
 
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
+1. First, we need the SQL container, which we will deploy with the default config, because I've got no inspiration.
 
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
+- ```bash
+  docker run --name in306-mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=dbuser -e MYSQL_PASSWORD=dbuser -e MYSQL_DATABASE=blogdb -d mysql:latest
+  ```
 
-If you want to build an _über-jar_, execute the following command:
+2. Next, start the validator in dev mode (important order to get it to work!)
 
-```shell script
-./mvnw package -Dquarkus.package.type=uber-jar
-```
+- ```bash
+  cd */in306-text-validator
+  ./mvnw quarkus:dev
+  ```
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
+3. Lastly, start the blog itself
 
-## Creating a native executable
-
-You can create a native executable using:
-
-```shell script
-./mvnw package -Pnative
-```
-
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
-
-```shell script
-./mvnw package -Pnative -Dquarkus.native.container-build=true
-```
-
-You can then execute your native executable with: `./target/in306-blog-0.1-runner`
-
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.
-
-# Reactive Quarkus
-
-## Introduction
-
-For example user events are a traditional use case for reactive programming.
-eg. - When a user clicks a button it should execute a specific function.
-So reactive means, we are reacting on actions, here a user clicking a button.
-
-This paradigm is especially useful and helps with following characteristics:
-
-- High data scale
-- High usage scale
-- Cloud based costs
-
-## How to scale up
-
-- Vertical Scaling
-- Add more power to your server
-- Horizontal Scaling
-- Adding more servers
-
-To be able to scale horizontally, well written code needs to be produced or legacy code needs to be optimized.
-
-For example, a function that receives a user and its preferences over two different services.
-Code that is unecessarily sequential would cause the code to wait for the first service to finish.
-This is blocking code further raising cost in performance and needed compute costs.
+- ```bash
+  cd */in306-blog
+  ./mvnw quarkus:dev
+  ```
