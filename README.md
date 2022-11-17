@@ -25,6 +25,16 @@ Following features do not work
 
 Under the section "Running the application" I have documented the necessary steps to at least get dev mode to run..
 
+### At least I tried
+So, there was at least an attempt to get certain things to work:
+- For the deployment of the microservices, I have built and uploaded my images to the GHCR repository to get them running with docker-compose (Spoiler: I did not get it running).
+- Here is the (not working) [docker-compose.yml](https://github.com/janbuettiker/in306-blog/blob/reactive/src/main/docker/docker-compose.yml)
+- Here is the native container for the blog: [in306-blog](https://github.com/janbuettiker/in306-blog/pkgs/container/in306-blog)
+- Here is the native container for the messaging service: [in306-text-validator](https://github.com/janbuettiker/in306-text-validator/pkgs/container/in306-text-validator)
+- Keycloak - Never got it running that the JWT tokens were accepted in dev mode (only httpie), so I just gave up and commented out all Authentication annotiations.
+- AAD - Instead of keycloak, I wanted to get authentication running with AAD, but that failed epicly as well (there was no front end for interactive auth and non-interactively with a client secret was also not working as expected)
+
+
 ## API Design
 
 ### Entries
